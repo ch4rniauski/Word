@@ -597,7 +597,14 @@ namespace Word
             try
             {
                 isOperationInProgress = true;
-                richTextBox1.SaveFile(currentFilePath, RichTextBoxStreamType.RichText);
+
+                // Определяем тип сохранения по расширению
+                var extension = Path.GetExtension(currentFilePath).ToLower();
+                RichTextBoxStreamType streamType = extension == ".txt"
+                    ? RichTextBoxStreamType.PlainText
+                    : RichTextBoxStreamType.RichText;
+
+                richTextBox1.SaveFile(currentFilePath, streamType);
                 isDirty = false;
                 UpdateTitle();
                 toolStripStatusLabel.Text = $"Файл сохранен: {Path.GetFileName(currentFilePath)}";
@@ -828,8 +835,6 @@ namespace Word
         {
             newToolStripMenuItem.Click += newToolStripMenuItem_Click!;
             openToolStripMenuItem.Click += openToolStripMenuItem_Click!;
-            saveToolStripMenuItem.Click += saveToolStripMenuItem_Click!;
-            saveAsToolStripMenuItem.Click += saveAsToolStripMenuItem_Click!;
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click!;
         }
 
