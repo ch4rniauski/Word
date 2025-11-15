@@ -759,7 +759,6 @@ public partial class Form1 : Form
 
             // Применяем ТОЛЬКО фон к RichTextBox, не трогая ForeColor
             richTextBox1.BackColor = theme.RichTextBoxBackColor;
-            // НЕ устанавливаем richTextBox1.ForeColor, чтобы сохранить форматирование
 
             // Применяем к StatusStrip
             statusStrip1.BackColor = theme.StatusStripBackColor;
@@ -870,19 +869,15 @@ public partial class Form1 : Form
         UpdateTitle();
     }
 
-    // Увеличить отступ
     private void increaseIndentToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        // Увеличиваем левый отступ абзаца на 20 пикселей
         richTextBox1.SelectionIndent += 20;
         _isDirty = true;
         UpdateTitle();
     }
 
-    // Уменьшить отступ
     private void decreaseIndentToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        // Уменьшаем левый отступ абзаца на 20 пикселей (не ниже 0)
         richTextBox1.SelectionIndent = Math.Max(0, richTextBox1.SelectionIndent - 20);
         _isDirty = true;
         UpdateTitle();
