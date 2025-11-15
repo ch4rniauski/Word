@@ -883,10 +883,7 @@ public partial class Form1 : Form
     private void decreaseIndentToolStripMenuItem_Click(object sender, EventArgs e)
     {
         // Уменьшаем левый отступ абзаца на 20 пикселей (не ниже 0)
-        if (richTextBox1.SelectionIndent >= 20)
-        {
-            richTextBox1.SelectionIndent -= 20;
-        }
+        richTextBox1.SelectionIndent = Math.Max(0, richTextBox1.SelectionIndent - 20);
         _isDirty = true;
         UpdateTitle();
     }
@@ -909,5 +906,18 @@ public partial class Form1 : Form
         alignLeftToolStripMenuItem.Checked = alignment == HorizontalAlignment.Left;
         alignCenterToolStripMenuItem.Checked = alignment == HorizontalAlignment.Center;
         alignRightToolStripMenuItem.Checked = alignment == HorizontalAlignment.Right;
+    }
+
+    private void customIndentToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        var indentDialog = new IndentDialog(richTextBox1.SelectionIndent);
+
+        if (indentDialog.ShowDialog(this) == DialogResult.OK)
+        {
+            richTextBox1.SelectionIndent = indentDialog.IndentValue;
+            _isDirty = true;
+            UpdateTitle();
+            toolStripStatusLabel.Text = $@"Отступ установлен: {indentDialog.IndentValue} пиксели";
+        }
     }
 }

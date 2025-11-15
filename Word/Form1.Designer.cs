@@ -71,15 +71,16 @@
             toolStripButtonItalic = new ToolStripButton();
             toolStripButtonUnderline = new ToolStripButton();
             toolStripSeparator6 = new ToolStripSeparator();
-            toolStripComboBoxFont = new ToolStripComboBox();
-            toolStripComboBoxFontSize = new ToolStripComboBox();
-            toolStripSeparator9 = new ToolStripSeparator();
             toolStripButtonAlignLeft = new ToolStripButton();
             toolStripButtonAlignCenter = new ToolStripButton();
             toolStripButtonAlignRight = new ToolStripButton();
+            toolStripSeparator9 = new ToolStripSeparator();
+            toolStripComboBoxFont = new ToolStripComboBox();
+            toolStripComboBoxFontSize = new ToolStripComboBox();
             richTextBox1 = new RichTextBox();
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel = new ToolStripStatusLabel();
+            customIndentToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -267,7 +268,7 @@
             // 
             // paragraphToolStripMenuItem
             // 
-            paragraphToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { alignLeftToolStripMenuItem, alignCenterToolStripMenuItem, alignRightToolStripMenuItem, toolStripSeparator7, increaseIndentToolStripMenuItem, decreaseIndentToolStripMenuItem });
+            paragraphToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { alignLeftToolStripMenuItem, alignCenterToolStripMenuItem, alignRightToolStripMenuItem, toolStripSeparator7, increaseIndentToolStripMenuItem, decreaseIndentToolStripMenuItem, customIndentToolStripMenuItem });
             paragraphToolStripMenuItem.Name = "paragraphToolStripMenuItem";
             paragraphToolStripMenuItem.Size = new Size(52, 20);
             paragraphToolStripMenuItem.Text = "Абзац";
@@ -427,23 +428,6 @@
             toolStripSeparator6.Name = "toolStripSeparator6";
             toolStripSeparator6.Size = new Size(6, 25);
             // 
-            // toolStripComboBoxFont
-            // 
-            toolStripComboBoxFont.Name = "toolStripComboBoxFont";
-            toolStripComboBoxFont.Size = new Size(140, 25);
-            toolStripComboBoxFont.SelectedIndexChanged += toolStripComboBoxFont_SelectedIndexChanged;
-            // 
-            // toolStripComboBoxFontSize
-            // 
-            toolStripComboBoxFontSize.Name = "toolStripComboBoxFontSize";
-            toolStripComboBoxFontSize.Size = new Size(87, 25);
-            toolStripComboBoxFontSize.SelectedIndexChanged += toolStripComboBoxFontSize_SelectedIndexChanged;
-            // 
-            // toolStripSeparator9
-            // 
-            toolStripSeparator9.Name = "toolStripSeparator9";
-            toolStripSeparator9.Size = new Size(6, 25);
-            // 
             // toolStripButtonAlignLeft
             // 
             toolStripButtonAlignLeft.CheckOnClick = true;
@@ -477,6 +461,23 @@
             toolStripButtonAlignRight.ToolTipText = "Выравнять вправо";
             toolStripButtonAlignRight.Click += toolStripButtonAlignRight_Click;
             // 
+            // toolStripSeparator9
+            // 
+            toolStripSeparator9.Name = "toolStripSeparator9";
+            toolStripSeparator9.Size = new Size(6, 25);
+            // 
+            // toolStripComboBoxFont
+            // 
+            toolStripComboBoxFont.Name = "toolStripComboBoxFont";
+            toolStripComboBoxFont.Size = new Size(140, 25);
+            toolStripComboBoxFont.SelectedIndexChanged += toolStripComboBoxFont_SelectedIndexChanged;
+            // 
+            // toolStripComboBoxFontSize
+            // 
+            toolStripComboBoxFontSize.Name = "toolStripComboBoxFontSize";
+            toolStripComboBoxFontSize.Size = new Size(87, 25);
+            toolStripComboBoxFontSize.SelectedIndexChanged += toolStripComboBoxFontSize_SelectedIndexChanged;
+            // 
             // richTextBox1
             // 
             richTextBox1.Dock = DockStyle.Fill;
@@ -504,6 +505,13 @@
             toolStripStatusLabel.Name = "toolStripStatusLabel";
             toolStripStatusLabel.Size = new Size(45, 17);
             toolStripStatusLabel.Text = "Готово";
+            // 
+            // customIndentToolStripMenuItem
+            // 
+            customIndentToolStripMenuItem.Name = "customIndentToolStripMenuItem";
+            customIndentToolStripMenuItem.Size = new Size(180, 22);
+            customIndentToolStripMenuItem.Text = "Пользовательский отступ...";
+            customIndentToolStripMenuItem.Click += customIndentToolStripMenuItem_Click;
             // 
             // Form1
             // 
@@ -585,5 +593,6 @@
         private ToolStripButton toolStripButtonAlignLeft;
         private ToolStripButton toolStripButtonAlignCenter;
         private ToolStripButton toolStripButtonAlignRight;
+        private ToolStripMenuItem customIndentToolStripMenuItem;
     }
 }
