@@ -1,3 +1,4 @@
+using System.Globalization;
 using Word.Classes;
 
 namespace Word;
@@ -118,7 +119,10 @@ public partial class Form1 : Form
             toolStripComboBoxFont.Text = richTextBox1.SelectionFont.FontFamily.Name;
 
             // Обновление ComboBox для размера шрифта
-            toolStripComboBoxFontSize.Text = richTextBox1.SelectionFont.Size.ToString();
+            toolStripComboBoxFontSize.Text = richTextBox1.SelectionFont.Size.ToString(CultureInfo.InvariantCulture);
+
+            // Обновляем кнопки выравнивания
+            UpdateAlignmentButtons(richTextBox1.SelectionAlignment);
         }
     }
 
@@ -138,8 +142,8 @@ public partial class Form1 : Form
             catch
             {
                 MessageBox.Show(
-                    text: "Ошибка при применении шрифта",
-                    caption: "Ошибка",
+                    text: @"Ошибка при применении шрифта",
+                    caption: @"Ошибка",
                     buttons: MessageBoxButtons.OK,
                     icon: MessageBoxIcon.Error);
             }
@@ -155,7 +159,7 @@ public partial class Form1 : Form
             {
                 if (float.TryParse(toolStripComboBoxFontSize.SelectedItem.ToString(), out var fontSize))
                 {
-                    Font currentFont = richTextBox1.SelectionFont;
+                    var currentFont = richTextBox1.SelectionFont;
                     richTextBox1.SelectionFont = new Font(currentFont.FontFamily, fontSize, currentFont.Style);
                     richTextBox1.Focus();
                 }
@@ -163,8 +167,8 @@ public partial class Form1 : Form
             catch
             {
                 MessageBox.Show(
-                    text: "Ошибка при применении размера шрифта",
-                    caption: "Ошибка",
+                    text: @"Ошибка при применении размера шрифта",
+                    caption: @"Ошибка",
                     buttons: MessageBoxButtons.OK,
                     icon: MessageBoxIcon.Error);
             }
@@ -175,14 +179,8 @@ public partial class Form1 : Form
     {
         var fontDialog = new FontDialog();
 
-        if (richTextBox1.SelectionFont is not null)
-        {
-            fontDialog.Font = richTextBox1.SelectionFont;
-        }
-        else
-        {
-            fontDialog.Font = richTextBox1.Font;
-        }
+        fontDialog.Font = richTextBox1.SelectionFont
+                          ?? richTextBox1.Font;
 
         if (fontDialog.ShowDialog() == DialogResult.OK)
         {
@@ -218,7 +216,7 @@ public partial class Form1 : Form
         {
             toolStripComboBoxFont.Items.Add(font.Name);
         }
-        toolStripComboBoxFont.Text = "Segoe UI";
+        toolStripComboBoxFont.Text = @"Segoe UI";
 
         // Инициализация ComboBox для выбора размера шрифта
         int[] sizes = [8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72];
@@ -226,7 +224,7 @@ public partial class Form1 : Form
         {
             toolStripComboBoxFontSize.Items.Add(size.ToString());
         }
-        toolStripComboBoxFontSize.Text = "12";
+        toolStripComboBoxFontSize.Text = @"12";
 
         // Загружаем сохраненные настройки
         LoadSettings();
@@ -244,7 +242,7 @@ public partial class Form1 : Form
             ? "Безымянный"
             : Path.GetFileName(_currentFilePath);
 
-        Text = $"{fileName}{(_isDirty ? "*" : "")} - Текстовый редактор";
+        Text = $@"{fileName}{(_isDirty ? "*" : "")} - Текстовый редактор";
     }
 
     private void LoadSettings()
@@ -310,9 +308,12 @@ public partial class Form1 : Form
             if (!string.IsNullOrEmpty(lastFile)
                 && File.Exists(lastFile))
             {
-                DialogResult result = MessageBox.Show(
-                    text: $"Открыть последний редактируемый файл?\n{Path.GetFileName(lastFile)}",
-                    caption: "Восстановление сеанса",
+                var result = MessageBox.Show(
+                    text: $"""
+                           Открыть последний редактируемый файл?
+                           {Path.GetFileName(lastFile)}
+                           """,
+                    caption: @"Восстановление сеанса",
                     buttons: MessageBoxButtons.YesNo,
                     icon: MessageBoxIcon.Question);
 
@@ -325,8 +326,12 @@ public partial class Form1 : Form
         catch (Exception ex)
         {
             MessageBox.Show(
-                text: $"Ошибка при восстановлении настроек:\n{ex.Message}\n\n" + "Будут использованы настройки по умолчанию.",
-                caption: "Предупреждение",
+                text: $"""
+                       Ошибка при восстановлении настроек:
+                       {ex.Message}
+                       Будут использованы настройки по умолчанию.
+                       """,
+                caption: @"Предупреждение",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Warning);
         }
@@ -350,8 +355,8 @@ public partial class Form1 : Form
         if (_isOperationInProgress)
         {
             MessageBox.Show(
-                text: "Операция выполняется. Пожалуйста, дождитесь ее завершения.",
-                caption: "Операция в процессе",
+                text: @"Операция выполняется. Пожалуйста, дождитесь ее завершения.",
+                caption: @"Операция в процессе",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Information);
             e.Cancel = true;
@@ -361,8 +366,8 @@ public partial class Form1 : Form
         if (_isDirty)
         {
             var result = MessageBox.Show(
-                text: "Документ был изменен. Сохранить изменения?",
-                caption: "Подтверждение закрытия",
+                text: @"Документ был изменен. Сохранить изменения?",
+                caption: @"Подтверждение закрытия",
                 buttons: MessageBoxButtons.YesNoCancel,
                 icon: MessageBoxIcon.Question);
 
@@ -444,8 +449,8 @@ public partial class Form1 : Form
         if (_isDirty)
         {
             var result = MessageBox.Show(
-                text: "Сохранить изменения в текущем документе?",
-                caption: "Несохраненные изменения",
+                text: @"Сохранить изменения в текущем документе?",
+                caption: @"Несохраненные изменения",
                 buttons: MessageBoxButtons.YesNoCancel,
                 icon: MessageBoxIcon.Warning);
 
@@ -473,8 +478,8 @@ public partial class Form1 : Form
 
         var openDialog = new OpenFileDialog()
         {
-            Filter = "RTF файлы (*.rtf)|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
-            Title = "Открыть документ",
+            Filter = @"RTF файлы (*.rtf)|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
+            Title = @"Открыть документ",
             CheckFileExists = true,
             CheckPathExists = true
         };
@@ -499,7 +504,7 @@ public partial class Form1 : Form
         _currentFilePath = string.Empty;
         _isDirty = false;
         UpdateTitle();
-        toolStripStatusLabel.Text = "Создан новый документ";
+        toolStripStatusLabel.Text = @"Создан новый документ";
     }
 
     private void LoadDocument(string filePath)
@@ -510,8 +515,11 @@ public partial class Form1 : Form
             if (!File.Exists(filePath))
             {
                 MessageBox.Show(
-                    text: $"Файл не найден:\n{filePath}",
-                    caption: "Ошибка загрузки",
+                    text: $"""
+                           Файл не найден:
+                           {filePath}
+                           """,
+                    caption: @"Ошибка загрузки",
                     buttons: MessageBoxButtons.OK,
                     icon: MessageBoxIcon.Error);
                 return;
@@ -531,9 +539,11 @@ public partial class Form1 : Form
                     break;
                 default:
                     var result = MessageBox.Show(
-                        text: $"Файл имеет неподдерживаемое расширение: {extension}\n" +
-                              "Попробовать открыть как обычный текст?",
-                        caption: "Предупреждение",
+                        text: $"""
+                               Файл имеет неподдерживаемое расширение: {extension}
+                               Попробовать открыть как обычный текст?
+                               """,
+                        caption: @"Предупреждение",
                         buttons: MessageBoxButtons.YesNo,
                         icon: MessageBoxIcon.Warning);
 
@@ -549,34 +559,43 @@ public partial class Form1 : Form
             _currentFilePath = filePath;
             _isDirty = false;
             UpdateTitle();
-            toolStripStatusLabel.Text = $"Файл загружен: {Path.GetFileName(filePath)}";
+            toolStripStatusLabel.Text = $@"Файл загружен: {Path.GetFileName(filePath)}";
         }
         catch (IOException ex)
         {
             MessageBox.Show(
-                text: $"Ошибка при чтении файла:\n{ex.Message}",
-                caption: "Ошибка ввода-вывода",
+                text: $"""
+                       Ошибка при чтении файла:
+                       {ex.Message}
+                       """,
+                caption: @"Ошибка ввода-вывода",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
-            toolStripStatusLabel.Text = "Ошибка загрузки файла";
+            toolStripStatusLabel.Text = @"Ошибка загрузки файла";
         }
         catch (ArgumentException ex)
         {
             MessageBox.Show(
-                text: $"Файл имеет неверный формат или поврежден:\n{ex.Message}",
-                caption: "Ошибка формата",
+                text: $"""
+                       Файл имеет неверный формат или поврежден:
+                       {ex.Message}
+                       """,
+                caption: @"Ошибка формата",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
-            toolStripStatusLabel.Text = "Ошибка формата файла";
+            toolStripStatusLabel.Text = @"Ошибка формата файла";
         }
         catch (Exception ex)
         {
             MessageBox.Show(
-                text: $"Неожиданная ошибка при загрузке файла:\n{ex.Message}",
-                caption: "Ошибка",
+                text: $"""
+                       Неожиданная ошибка при загрузке файла:
+                       {ex.Message}
+                       """,
+                caption: @"Ошибка",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
-            toolStripStatusLabel.Text = "Ошибка загрузки";
+            toolStripStatusLabel.Text = @"Ошибка загрузки";
         }
     }
 
@@ -600,15 +619,17 @@ public partial class Form1 : Form
             richTextBox1.SaveFile(_currentFilePath, streamType);
             _isDirty = false;
             UpdateTitle();
-            toolStripStatusLabel.Text = $"Файл сохранен: {Path.GetFileName(_currentFilePath)}";
+            toolStripStatusLabel.Text = $@"Файл сохранен: {Path.GetFileName(_currentFilePath)}";
             return true;
         }
         catch (UnauthorizedAccessException)
         {
             MessageBox.Show(
-                text: "Недостаточно прав для сохранения файла в этом месте.\n" +
-                      "Выберите другое место для сохранения.",
-                caption: "Ошибка доступа",
+                text: """
+                      Недостаточно прав для сохранения файла в этом месте.
+                      Выберите другое место для сохранения.
+                      """,
+                caption: @"Ошибка доступа",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
             return SaveDocumentAs();
@@ -616,9 +637,11 @@ public partial class Form1 : Form
         catch (IOException ex)
         {
             var result = MessageBox.Show(
-                text: $"Ошибка при сохранении файла:\n{ex.Message}\n\n" +
-                      "Попробовать сохранить в другое место?",
-                caption: "Ошибка сохранения",
+                text: $"""
+                       Ошибка при сохранении файла:{ex.Message}
+                       Попробовать сохранить в другое место?
+                       """,
+                caption: @"Ошибка сохранения",
                 buttons: MessageBoxButtons.YesNo,
                 icon: MessageBoxIcon.Error);
 
@@ -626,17 +649,20 @@ public partial class Form1 : Form
             {
                 return SaveDocumentAs();
             }
-            toolStripStatusLabel.Text = "Ошибка сохранения";
+            toolStripStatusLabel.Text = @"Ошибка сохранения";
             return false;
         }
         catch (Exception ex)
         {
             MessageBox.Show(
-                text: $"Неожиданная ошибка при сохранении:\n{ex.Message}",
-                caption: "Ошибка",
+                text: $"""
+                       Неожиданная ошибка при сохранении:
+                       {ex.Message}
+                       """,
+                caption: @"Ошибка",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
-            toolStripStatusLabel.Text = "Ошибка сохранения";
+            toolStripStatusLabel.Text = @"Ошибка сохранения";
             return false;
         }
         finally
@@ -647,10 +673,10 @@ public partial class Form1 : Form
 
     private bool SaveDocumentAs()
     {
-        var saveDialog = new SaveFileDialog()
+        var saveDialog = new SaveFileDialog
         {
-            Filter = "RTF файлы (*.rtf)|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
-            Title = "Сохранить документ как",
+            Filter = @"RTF файлы (*.rtf)|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
+            Title = @"Сохранить документ как",
             CheckPathExists = true,
             AddExtension = true,
             DefaultExt = "rtf"
@@ -662,13 +688,14 @@ public partial class Form1 : Form
             saveDialog.InitialDirectory = Path.GetDirectoryName(_currentFilePath);
         }
 
-        if (saveDialog.ShowDialog() == DialogResult.OK)
+        if (saveDialog.ShowDialog() != DialogResult.OK)
         {
-            _currentFilePath = saveDialog.FileName;
-            return SaveDocument();
+            return false;
         }
+        
+        _currentFilePath = saveDialog.FileName;
+        return SaveDocument();
 
-        return false;
     }
 
     private void toolStripButtonSave_Click(object sender, EventArgs e)
@@ -743,16 +770,19 @@ public partial class Form1 : Form
             Properties.Settings.Default.SelectedTheme = theme.Name;
             Properties.Settings.Default.Save();
 
-            toolStripStatusLabel.Text = $"Применена тема: {theme.Name}";
+            toolStripStatusLabel.Text = $@"Применена тема: {theme.Name}";
         }
         catch (Exception ex)
         {
             MessageBox.Show(
-                text: $"Ошибка при применении темы:\n{ex.Message}",
-                caption: "Ошибка",
+                text: $"""
+                       Ошибка при применении темы:
+                       {ex.Message}
+                       """,
+                caption: @"Ошибка",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
-            toolStripStatusLabel.Text = "Ошибка применения темы";
+            toolStripStatusLabel.Text = @"Ошибка применения темы";
         }
     }
 
@@ -814,5 +844,70 @@ public partial class Form1 : Form
         lightThemeToolStripMenuItem.Checked = false;
         darkThemeToolStripMenuItem.Checked = false;
         blueThemeToolStripMenuItem.Checked = true;
+    }
+
+    private void alignLeftToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        richTextBox1.SelectionAlignment = HorizontalAlignment.Left;
+        UpdateAlignmentButtons(HorizontalAlignment.Left);
+        _isDirty = true;
+        UpdateTitle();
+    }
+
+    private void alignCenterToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        richTextBox1.SelectionAlignment = HorizontalAlignment.Center;
+        UpdateAlignmentButtons(HorizontalAlignment.Center);
+        _isDirty = true;
+        UpdateTitle();
+    }
+
+    private void alignRightToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        richTextBox1.SelectionAlignment = HorizontalAlignment.Right;
+        UpdateAlignmentButtons(HorizontalAlignment.Right);
+        _isDirty = true;
+        UpdateTitle();
+    }
+
+    // Увеличить отступ
+    private void increaseIndentToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        // Увеличиваем левый отступ абзаца на 20 пикселей
+        richTextBox1.SelectionIndent += 20;
+        _isDirty = true;
+        UpdateTitle();
+    }
+
+    // Уменьшить отступ
+    private void decreaseIndentToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        // Уменьшаем левый отступ абзаца на 20 пикселей (не ниже 0)
+        if (richTextBox1.SelectionIndent >= 20)
+        {
+            richTextBox1.SelectionIndent -= 20;
+        }
+        _isDirty = true;
+        UpdateTitle();
+    }
+
+    private void toolStripButtonAlignLeft_Click(object sender, EventArgs e)
+        => alignLeftToolStripMenuItem_Click(sender, e);
+
+    private void toolStripButtonAlignCenter_Click(object sender, EventArgs e)
+        => alignCenterToolStripMenuItem_Click(sender, e);
+
+    private void toolStripButtonAlignRight_Click(object sender, EventArgs e)
+        => alignRightToolStripMenuItem_Click(sender, e);
+
+    private void UpdateAlignmentButtons(HorizontalAlignment alignment)
+    {
+        toolStripButtonAlignLeft.Checked = alignment == HorizontalAlignment.Left;
+        toolStripButtonAlignCenter.Checked = alignment == HorizontalAlignment.Center;
+        toolStripButtonAlignRight.Checked = alignment == HorizontalAlignment.Right;
+
+        alignLeftToolStripMenuItem.Checked = alignment == HorizontalAlignment.Left;
+        alignCenterToolStripMenuItem.Checked = alignment == HorizontalAlignment.Center;
+        alignRightToolStripMenuItem.Checked = alignment == HorizontalAlignment.Right;
     }
 }
