@@ -26,19 +26,20 @@ public partial class Form1 : Form
 
             if (currentFont.Bold)
             {
-                // Убираем жирный стиль, сохраняя остальные
                 newStyle = currentFont.Style & ~FontStyle.Bold;
                 toolStripButtonBold.Checked = false;
             }
             else
             {
-                // Добавляем жирный стиль к существующим
                 newStyle = currentFont.Style | FontStyle.Bold;
                 toolStripButtonBold.Checked = true;
             }
 
             richTextBox1.SelectionFont = new Font(currentFont, newStyle);
-            richTextBox1.Focus(); // Восстанавливаем фокус
+            richTextBox1.Focus();
+            _isDirty = true;
+            UpdateTitle();
+            richTextBox1_SelectionChanged(sender, e);
         }
     }
 
@@ -68,6 +69,9 @@ public partial class Form1 : Form
 
             richTextBox1.SelectionFont = new Font(currentFont, newStyle);
             richTextBox1.Focus();
+            _isDirty = true;
+            UpdateTitle();
+            richTextBox1_SelectionChanged(sender, e);
         }
     }
 
@@ -97,6 +101,9 @@ public partial class Form1 : Form
 
             richTextBox1.SelectionFont = new Font(currentFont, newStyle);
             richTextBox1.Focus();
+            _isDirty = true;
+            UpdateTitle();
+            richTextBox1_SelectionChanged(sender, e);
         }
     }
 
@@ -114,6 +121,11 @@ public partial class Form1 : Form
             toolStripButtonBold.Checked = richTextBox1.SelectionFont.Bold;
             toolStripButtonItalic.Checked = richTextBox1.SelectionFont.Italic;
             toolStripButtonUnderline.Checked = richTextBox1.SelectionFont.Underline;
+
+            // Обновление пунктов меню форматирования
+            boldToolStripMenuItem.Checked = richTextBox1.SelectionFont.Bold;
+            italicToolStripMenuItem.Checked = richTextBox1.SelectionFont.Italic;
+            underlineToolStripMenuItem.Checked = richTextBox1.SelectionFont.Underline;
 
             // Обновление ComboBox для выбора шрифта
             toolStripComboBoxFont.Text = richTextBox1.SelectionFont.FontFamily.Name;
@@ -138,6 +150,9 @@ public partial class Form1 : Form
 
                 richTextBox1.SelectionFont = new Font(fontName, currentFont.Size, currentFont.Style);
                 richTextBox1.Focus();
+                _isDirty = true;
+                UpdateTitle();
+                richTextBox1_SelectionChanged(sender, e);
             }
             catch
             {
@@ -162,6 +177,9 @@ public partial class Form1 : Form
                     var currentFont = richTextBox1.SelectionFont;
                     richTextBox1.SelectionFont = new Font(currentFont.FontFamily, fontSize, currentFont.Style);
                     richTextBox1.Focus();
+                    _isDirty = true;
+                    UpdateTitle();
+                    richTextBox1_SelectionChanged(sender, e);
                 }
             }
             catch
@@ -177,10 +195,11 @@ public partial class Form1 : Form
 
     private void fontToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        var fontDialog = new FontDialog();
-
-        fontDialog.Font = richTextBox1.SelectionFont
-                          ?? richTextBox1.Font;
+        var fontDialog = new FontDialog
+        {
+            Font = richTextBox1.SelectionFont
+                              ?? richTextBox1.Font
+        };
 
         if (fontDialog.ShowDialog() == DialogResult.OK)
         {
@@ -188,6 +207,7 @@ public partial class Form1 : Form
             richTextBox1.Focus();
             _isDirty = true;
             UpdateTitle();
+            richTextBox1_SelectionChanged(sender, e);
         }
     }
 
@@ -206,6 +226,7 @@ public partial class Form1 : Form
             richTextBox1.Focus();
             _isDirty = true;
             UpdateTitle();
+            richTextBox1_SelectionChanged(sender, e);
         }
     }
 
@@ -469,27 +490,6 @@ public partial class Form1 : Form
     private void toolStripButtonOpen_Click(object sender, EventArgs e)
         => openToolStripMenuItem_Click(sender, e);
 
-    private void openToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-        if (!CheckSaveDocument())
-        {
-            return; // Пользователь отменил операцию
-        }
-
-        var openDialog = new OpenFileDialog()
-        {
-            Filter = @"RTF файлы (*.rtf)|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
-            Title = @"Открыть документ",
-            CheckFileExists = true,
-            CheckPathExists = true
-        };
-
-        if (openDialog.ShowDialog() == DialogResult.OK)
-        {
-            LoadDocument(openDialog.FileName);
-        }
-    }
-
     private void toolStripButtonNew_Click(object sender, EventArgs e)
         => newToolStripMenuItem_Click(sender, e);
 
@@ -692,7 +692,7 @@ public partial class Form1 : Form
         {
             return false;
         }
-        
+
         _currentFilePath = saveDialog.FileName;
         return SaveDocument();
 
@@ -913,6 +913,83 @@ public partial class Form1 : Form
             _isDirty = true;
             UpdateTitle();
             toolStripStatusLabel.Text = $@"Отступ установлен: {indentDialog.IndentValue} пиксели";
+        }
+    }
+
+    private void openToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (!CheckSaveDocument())
+        {
+            return; // Пользователь отменил операцию
+        }
+
+        var openDialog = new OpenFileDialog()
+        {
+            Filter = @"RTF файлы (*.rtf)|*.rtf|Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*",
+            Title = @"Открыть документ",
+            CheckFileExists = true,
+            CheckPathExists = true
+        };
+
+        if (openDialog.ShowDialog() == DialogResult.OK)
+        {
+            LoadDocument(openDialog.FileName);
+        }
+    }
+
+    private void toolStripComboBoxFontSize_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Return)
+        {
+            e.Handled = true;
+
+            if (richTextBox1.SelectionFont is not null)
+            {
+                try
+                {
+                    // Получаем текст, введенный пользователем
+                    if (float.TryParse(toolStripComboBoxFontSize.Text, out var fontSize))
+                    {
+                        if (fontSize < 1 || fontSize > 400)
+                        {
+                            MessageBox.Show(
+                                text: @"Размер шрифта должен быть от 1 до 400",
+                                caption: @"Недопустимое значение",
+                                buttons: MessageBoxButtons.OK,
+                                icon: MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        var currentFont = richTextBox1.SelectionFont;
+
+                        richTextBox1.SelectionFont = new Font(currentFont.FontFamily, fontSize, currentFont.Style);
+                        richTextBox1.Focus();
+
+                        _isDirty = true;
+
+                        UpdateTitle();
+                        richTextBox1_SelectionChanged(sender, EventArgs.Empty);
+
+                        toolStripStatusLabel.Text = $@"Размер шрифта изменен на: {fontSize}";
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            text: @"Введите корректное число для размера шрифта",
+                            caption: @"Ошибка ввода",
+                            buttons: MessageBoxButtons.OK,
+                            icon: MessageBoxIcon.Warning);
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show(
+                        text: @"Ошибка при применении размера шрифта",
+                        caption: @"Ошибка",
+                        buttons: MessageBoxButtons.OK,
+                        icon: MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

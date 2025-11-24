@@ -58,6 +58,7 @@
             toolStripSeparator7 = new ToolStripSeparator();
             increaseIndentToolStripMenuItem = new ToolStripMenuItem();
             decreaseIndentToolStripMenuItem = new ToolStripMenuItem();
+            customIndentToolStripMenuItem = new ToolStripMenuItem();
             themeToolStripMenuItem = new ToolStripMenuItem();
             lightThemeToolStripMenuItem = new ToolStripMenuItem();
             darkThemeToolStripMenuItem = new ToolStripMenuItem();
@@ -80,7 +81,6 @@
             richTextBox1 = new RichTextBox();
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel = new ToolStripStatusLabel();
-            customIndentToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -119,6 +119,7 @@
             openToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
             openToolStripMenuItem.Size = new Size(234, 22);
             openToolStripMenuItem.Text = "Открыть...";
+            openToolStripMenuItem.Click += openToolStripMenuItem_Click;
             // 
             // saveToolStripMenuItem
             // 
@@ -277,15 +278,15 @@
             // 
             alignLeftToolStripMenuItem.Name = "alignLeftToolStripMenuItem";
             alignLeftToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.L;
-            alignLeftToolStripMenuItem.Size = new Size(262, 22);
-            alignLeftToolStripMenuItem.Text = "Выравнять влево";
+            alignLeftToolStripMenuItem.Size = new Size(274, 22);
+            alignLeftToolStripMenuItem.Text = "Выравнять по левому краю";
             alignLeftToolStripMenuItem.Click += alignLeftToolStripMenuItem_Click;
             // 
             // alignCenterToolStripMenuItem
             // 
             alignCenterToolStripMenuItem.Name = "alignCenterToolStripMenuItem";
             alignCenterToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.E;
-            alignCenterToolStripMenuItem.Size = new Size(262, 22);
+            alignCenterToolStripMenuItem.Size = new Size(274, 22);
             alignCenterToolStripMenuItem.Text = "Выравнять по центру";
             alignCenterToolStripMenuItem.Click += alignCenterToolStripMenuItem_Click;
             // 
@@ -293,20 +294,20 @@
             // 
             alignRightToolStripMenuItem.Name = "alignRightToolStripMenuItem";
             alignRightToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.R;
-            alignRightToolStripMenuItem.Size = new Size(262, 22);
-            alignRightToolStripMenuItem.Text = "Выравнять вправо";
+            alignRightToolStripMenuItem.Size = new Size(274, 22);
+            alignRightToolStripMenuItem.Text = "Выравнять по правому краю";
             alignRightToolStripMenuItem.Click += alignRightToolStripMenuItem_Click;
             // 
             // toolStripSeparator7
             // 
             toolStripSeparator7.Name = "toolStripSeparator7";
-            toolStripSeparator7.Size = new Size(259, 6);
+            toolStripSeparator7.Size = new Size(271, 6);
             // 
             // increaseIndentToolStripMenuItem
             // 
             increaseIndentToolStripMenuItem.Name = "increaseIndentToolStripMenuItem";
             increaseIndentToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Tab;
-            increaseIndentToolStripMenuItem.Size = new Size(262, 22);
+            increaseIndentToolStripMenuItem.Size = new Size(274, 22);
             increaseIndentToolStripMenuItem.Text = "Увеличить отступ";
             increaseIndentToolStripMenuItem.Click += increaseIndentToolStripMenuItem_Click;
             // 
@@ -314,9 +315,16 @@
             // 
             decreaseIndentToolStripMenuItem.Name = "decreaseIndentToolStripMenuItem";
             decreaseIndentToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.Tab;
-            decreaseIndentToolStripMenuItem.Size = new Size(262, 22);
+            decreaseIndentToolStripMenuItem.Size = new Size(274, 22);
             decreaseIndentToolStripMenuItem.Text = "Уменьшить отступ";
             decreaseIndentToolStripMenuItem.Click += decreaseIndentToolStripMenuItem_Click;
+            // 
+            // customIndentToolStripMenuItem
+            // 
+            customIndentToolStripMenuItem.Name = "customIndentToolStripMenuItem";
+            customIndentToolStripMenuItem.Size = new Size(274, 22);
+            customIndentToolStripMenuItem.Text = "Пользовательский отступ...";
+            customIndentToolStripMenuItem.Click += customIndentToolStripMenuItem_Click;
             // 
             // themeToolStripMenuItem
             // 
@@ -436,7 +444,7 @@
             toolStripButtonAlignLeft.ImageTransparentColor = Color.Magenta;
             toolStripButtonAlignLeft.Name = "toolStripButtonAlignLeft";
             toolStripButtonAlignLeft.Size = new Size(23, 22);
-            toolStripButtonAlignLeft.ToolTipText = "Выравнять влево";
+            toolStripButtonAlignLeft.ToolTipText = "Выравнять по левому краю";
             toolStripButtonAlignLeft.Click += toolStripButtonAlignLeft_Click;
             // 
             // toolStripButtonAlignCenter
@@ -458,7 +466,7 @@
             toolStripButtonAlignRight.ImageTransparentColor = Color.Magenta;
             toolStripButtonAlignRight.Name = "toolStripButtonAlignRight";
             toolStripButtonAlignRight.Size = new Size(23, 22);
-            toolStripButtonAlignRight.ToolTipText = "Выравнять вправо";
+            toolStripButtonAlignRight.ToolTipText = "Выравнять по правому краю";
             toolStripButtonAlignRight.Click += toolStripButtonAlignRight_Click;
             // 
             // toolStripSeparator9
@@ -477,6 +485,7 @@
             toolStripComboBoxFontSize.Name = "toolStripComboBoxFontSize";
             toolStripComboBoxFontSize.Size = new Size(87, 25);
             toolStripComboBoxFontSize.SelectedIndexChanged += toolStripComboBoxFontSize_SelectedIndexChanged;
+            toolStripComboBoxFontSize.KeyDown += toolStripComboBoxFontSize_KeyDown;
             // 
             // richTextBox1
             // 
@@ -505,13 +514,6 @@
             toolStripStatusLabel.Name = "toolStripStatusLabel";
             toolStripStatusLabel.Size = new Size(45, 17);
             toolStripStatusLabel.Text = "Готово";
-            // 
-            // customIndentToolStripMenuItem
-            // 
-            customIndentToolStripMenuItem.Name = "customIndentToolStripMenuItem";
-            customIndentToolStripMenuItem.Size = new Size(180, 22);
-            customIndentToolStripMenuItem.Text = "Пользовательский отступ...";
-            customIndentToolStripMenuItem.Click += customIndentToolStripMenuItem_Click;
             // 
             // Form1
             // 
