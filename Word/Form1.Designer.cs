@@ -278,36 +278,36 @@
             // 
             alignLeftToolStripMenuItem.Name = "alignLeftToolStripMenuItem";
             alignLeftToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.L;
-            alignLeftToolStripMenuItem.Size = new Size(274, 22);
-            alignLeftToolStripMenuItem.Text = "Выравнять по левому краю";
+            alignLeftToolStripMenuItem.Size = new Size(275, 22);
+            alignLeftToolStripMenuItem.Text = "Выровнять по левому краю";
             alignLeftToolStripMenuItem.Click += alignLeftToolStripMenuItem_Click;
             // 
             // alignCenterToolStripMenuItem
             // 
             alignCenterToolStripMenuItem.Name = "alignCenterToolStripMenuItem";
             alignCenterToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.E;
-            alignCenterToolStripMenuItem.Size = new Size(274, 22);
-            alignCenterToolStripMenuItem.Text = "Выравнять по центру";
+            alignCenterToolStripMenuItem.Size = new Size(275, 22);
+            alignCenterToolStripMenuItem.Text = "Выровнять по центру";
             alignCenterToolStripMenuItem.Click += alignCenterToolStripMenuItem_Click;
             // 
             // alignRightToolStripMenuItem
             // 
             alignRightToolStripMenuItem.Name = "alignRightToolStripMenuItem";
             alignRightToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.R;
-            alignRightToolStripMenuItem.Size = new Size(274, 22);
-            alignRightToolStripMenuItem.Text = "Выравнять по правому краю";
+            alignRightToolStripMenuItem.Size = new Size(275, 22);
+            alignRightToolStripMenuItem.Text = "Выровнять по правому краю";
             alignRightToolStripMenuItem.Click += alignRightToolStripMenuItem_Click;
             // 
             // toolStripSeparator7
             // 
             toolStripSeparator7.Name = "toolStripSeparator7";
-            toolStripSeparator7.Size = new Size(271, 6);
+            toolStripSeparator7.Size = new Size(272, 6);
             // 
             // increaseIndentToolStripMenuItem
             // 
             increaseIndentToolStripMenuItem.Name = "increaseIndentToolStripMenuItem";
             increaseIndentToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Tab;
-            increaseIndentToolStripMenuItem.Size = new Size(274, 22);
+            increaseIndentToolStripMenuItem.Size = new Size(275, 22);
             increaseIndentToolStripMenuItem.Text = "Увеличить отступ";
             increaseIndentToolStripMenuItem.Click += increaseIndentToolStripMenuItem_Click;
             // 
@@ -315,14 +315,14 @@
             // 
             decreaseIndentToolStripMenuItem.Name = "decreaseIndentToolStripMenuItem";
             decreaseIndentToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.Tab;
-            decreaseIndentToolStripMenuItem.Size = new Size(274, 22);
+            decreaseIndentToolStripMenuItem.Size = new Size(275, 22);
             decreaseIndentToolStripMenuItem.Text = "Уменьшить отступ";
             decreaseIndentToolStripMenuItem.Click += decreaseIndentToolStripMenuItem_Click;
             // 
             // customIndentToolStripMenuItem
             // 
             customIndentToolStripMenuItem.Name = "customIndentToolStripMenuItem";
-            customIndentToolStripMenuItem.Size = new Size(274, 22);
+            customIndentToolStripMenuItem.Size = new Size(275, 22);
             customIndentToolStripMenuItem.Text = "Пользовательский отступ...";
             customIndentToolStripMenuItem.Click += customIndentToolStripMenuItem_Click;
             // 
@@ -444,7 +444,7 @@
             toolStripButtonAlignLeft.ImageTransparentColor = Color.Magenta;
             toolStripButtonAlignLeft.Name = "toolStripButtonAlignLeft";
             toolStripButtonAlignLeft.Size = new Size(23, 22);
-            toolStripButtonAlignLeft.ToolTipText = "Выравнять по левому краю";
+            toolStripButtonAlignLeft.ToolTipText = "Выровнять по левому краю";
             toolStripButtonAlignLeft.Click += toolStripButtonAlignLeft_Click;
             // 
             // toolStripButtonAlignCenter
@@ -455,7 +455,7 @@
             toolStripButtonAlignCenter.ImageTransparentColor = Color.Magenta;
             toolStripButtonAlignCenter.Name = "toolStripButtonAlignCenter";
             toolStripButtonAlignCenter.Size = new Size(23, 22);
-            toolStripButtonAlignCenter.ToolTipText = "Выравнять по центру";
+            toolStripButtonAlignCenter.ToolTipText = "Выровнять по центру";
             toolStripButtonAlignCenter.Click += toolStripButtonAlignCenter_Click;
             // 
             // toolStripButtonAlignRight
@@ -466,7 +466,7 @@
             toolStripButtonAlignRight.ImageTransparentColor = Color.Magenta;
             toolStripButtonAlignRight.Name = "toolStripButtonAlignRight";
             toolStripButtonAlignRight.Size = new Size(23, 22);
-            toolStripButtonAlignRight.ToolTipText = "Выравнять по правому краю";
+            toolStripButtonAlignRight.ToolTipText = "Выровнять по правому краю";
             toolStripButtonAlignRight.Click += toolStripButtonAlignRight_Click;
             // 
             // toolStripSeparator9
