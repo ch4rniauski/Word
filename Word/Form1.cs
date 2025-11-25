@@ -249,6 +249,9 @@ public partial class Form1 : Form
 
         // Загружаем сохраненные настройки
         LoadSettings();
+
+        _isDirty = false;
+        UpdateTitle();
     }
 
     private void richTextBox1_TextChanged(object sender, EventArgs e)
@@ -331,9 +334,9 @@ public partial class Form1 : Form
             {
                 var result = MessageBox.Show(
                     text: $"""
-                           Открыть последний редактируемый файл?
-                           {Path.GetFileName(lastFile)}
-                           """,
+                       Открыть последний редактируемый файл?
+                       {Path.GetFileName(lastFile)}
+                       """,
                     caption: @"Восстановление сеанса",
                     buttons: MessageBoxButtons.YesNo,
                     icon: MessageBoxIcon.Question);
@@ -343,15 +346,19 @@ public partial class Form1 : Form
                     LoadDocument(lastFile);
                 }
             }
+
+            _isDirty = false;
+
+            UpdateTitle();
         }
         catch (Exception ex)
         {
             MessageBox.Show(
                 text: $"""
-                       Ошибка при восстановлении настроек:
-                       {ex.Message}
-                       Будут использованы настройки по умолчанию.
-                       """,
+                   Ошибка при восстановлении настроек:
+                   {ex.Message}
+                   Будут использованы настройки по умолчанию.
+                   """,
                 caption: @"Предупреждение",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Warning);
