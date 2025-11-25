@@ -247,7 +247,6 @@ public partial class Form1 : Form
         }
         toolStripComboBoxFontSize.Text = @"12";
 
-        // Загружаем сохраненные настройки
         LoadSettings();
 
         _isDirty = false;
@@ -308,10 +307,8 @@ public partial class Form1 : Form
             };
             ApplyTheme(theme);
 
-            // Установим галочки у текущей темы в меню
             UpdateThemeMenuCheckmarks(theme.Name);
 
-            // Восстанавливаем шрифт по умолчанию
             var fontName = Properties.Settings.Default.DefaultFontName;
             var fontSize = Properties.Settings.Default.DefaultFontSize;
 
@@ -376,7 +373,6 @@ public partial class Form1 : Form
     {
         if (_isSessionEnding)
         {
-            // Разрешить быстрое закрытие при завершении сеанса
             return;
         }
 
@@ -408,10 +404,9 @@ public partial class Form1 : Form
                     }
                     break;
                 case DialogResult.Cancel:
-                    e.Cancel = true; // Отменить закрытие
+                    e.Cancel = true;
                     break;
                 case DialogResult.No:
-                    // Закрыть без сохранения
                     break;
             }
         }
@@ -465,7 +460,7 @@ public partial class Form1 : Form
             }
             catch
             {
-                // Не показываем ошибку при завершении сеанса
+                // ignored
             }
         }
 
@@ -474,24 +469,25 @@ public partial class Form1 : Form
 
     private bool CheckSaveDocument()
     {
-        if (_isDirty)
+        if (!_isDirty)
         {
-            var result = MessageBox.Show(
-                text: @"Сохранить изменения в текущем документе?",
-                caption: @"Несохраненные изменения",
-                buttons: MessageBoxButtons.YesNoCancel,
-                icon: MessageBoxIcon.Warning);
-
-            return result switch
-            {
-                DialogResult.Yes => SaveDocument(),
-                DialogResult.No => true,
-                DialogResult.Cancel => false,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            return true;
         }
+        
+        var result = MessageBox.Show(
+            text: @"Сохранить изменения в текущем документе?",
+            caption: @"Несохраненные изменения",
+            buttons: MessageBoxButtons.YesNoCancel,
+            icon: MessageBoxIcon.Warning);
 
-        return true;
+        return result switch
+        {
+            DialogResult.Yes => SaveDocument(),
+            DialogResult.No => true,
+            DialogResult.Cancel => false,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
     }
 
     private void toolStripButtonOpen_Click(object sender, EventArgs e)
@@ -510,7 +506,9 @@ public partial class Form1 : Form
         richTextBox1.Clear();
         _currentFilePath = string.Empty;
         _isDirty = false;
+        
         UpdateTitle();
+        
         toolStripStatusLabel.Text = @"Создан новый документ";
     }
 
@@ -518,7 +516,6 @@ public partial class Form1 : Form
     {
         try
         {
-            // Проверка существования файла
             if (!File.Exists(filePath))
             {
                 MessageBox.Show(
@@ -529,10 +526,10 @@ public partial class Form1 : Form
                     caption: @"Ошибка загрузки",
                     buttons: MessageBoxButtons.OK,
                     icon: MessageBoxIcon.Error);
+                
                 return;
             }
 
-            // Проверка расширения файла
             var extension = Path.GetExtension(filePath).ToLower();
             RichTextBoxStreamType streamType;
 
@@ -558,14 +555,18 @@ public partial class Form1 : Form
                     {
                         return;
                     }
+                    
                     streamType = RichTextBoxStreamType.PlainText;
+                    
                     break;
             }
 
             richTextBox1.LoadFile(filePath, streamType);
             _currentFilePath = filePath;
             _isDirty = false;
+            
             UpdateTitle();
+            
             toolStripStatusLabel.Text = $@"Файл загружен: {Path.GetFileName(filePath)}";
         }
         catch (IOException ex)
@@ -578,6 +579,7 @@ public partial class Form1 : Form
                 caption: @"Ошибка ввода-вывода",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
+            
             toolStripStatusLabel.Text = @"Ошибка загрузки файла";
         }
         catch (ArgumentException ex)
@@ -590,6 +592,7 @@ public partial class Form1 : Form
                 caption: @"Ошибка формата",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
+            
             toolStripStatusLabel.Text = @"Ошибка формата файла";
         }
         catch (Exception ex)
@@ -602,6 +605,7 @@ public partial class Form1 : Form
                 caption: @"Ошибка",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
+            
             toolStripStatusLabel.Text = @"Ошибка загрузки";
         }
     }
@@ -624,9 +628,13 @@ public partial class Form1 : Form
                 : RichTextBoxStreamType.RichText;
 
             richTextBox1.SaveFile(_currentFilePath, streamType);
+
             _isDirty = false;
+
             UpdateTitle();
+
             toolStripStatusLabel.Text = $@"Файл сохранен: {Path.GetFileName(_currentFilePath)}";
+
             return true;
         }
         catch (UnauthorizedAccessException)
@@ -639,6 +647,7 @@ public partial class Form1 : Form
                 caption: @"Ошибка доступа",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
+            
             return SaveDocumentAs();
         }
         catch (IOException ex)
@@ -656,7 +665,9 @@ public partial class Form1 : Form
             {
                 return SaveDocumentAs();
             }
+
             toolStripStatusLabel.Text = @"Ошибка сохранения";
+
             return false;
         }
         catch (Exception ex)
@@ -669,7 +680,9 @@ public partial class Form1 : Form
                 caption: @"Ошибка",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
+
             toolStripStatusLabel.Text = @"Ошибка сохранения";
+
             return false;
         }
         finally
@@ -701,6 +714,7 @@ public partial class Form1 : Form
         }
 
         _currentFilePath = saveDialog.FileName;
+
         return SaveDocument();
 
     }
@@ -788,6 +802,7 @@ public partial class Form1 : Form
                 caption: @"Ошибка",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
+
             toolStripStatusLabel.Text = @"Ошибка применения темы";
         }
     }
@@ -799,8 +814,7 @@ public partial class Form1 : Form
             item.BackColor = theme.MenuBackColor;
             item.ForeColor = theme.MenuForeColor;
 
-            if (item is ToolStripMenuItem menuItem
-                && menuItem.HasDropDownItems)
+            if (item is ToolStripMenuItem { HasDropDownItems: true } menuItem)
             {
                 ApplyThemeToMenuItems(menuItem.DropDownItems, theme);
             }
@@ -855,38 +869,51 @@ public partial class Form1 : Form
     private void alignLeftToolStripMenuItem_Click(object sender, EventArgs e)
     {
         richTextBox1.SelectionAlignment = HorizontalAlignment.Left;
+
         UpdateAlignmentButtons(HorizontalAlignment.Left);
+
         _isDirty = true;
+
         UpdateTitle();
     }
 
     private void alignCenterToolStripMenuItem_Click(object sender, EventArgs e)
     {
         richTextBox1.SelectionAlignment = HorizontalAlignment.Center;
+
         UpdateAlignmentButtons(HorizontalAlignment.Center);
+
         _isDirty = true;
+
         UpdateTitle();
     }
 
     private void alignRightToolStripMenuItem_Click(object sender, EventArgs e)
     {
         richTextBox1.SelectionAlignment = HorizontalAlignment.Right;
+
         UpdateAlignmentButtons(HorizontalAlignment.Right);
+
         _isDirty = true;
+
         UpdateTitle();
     }
 
     private void increaseIndentToolStripMenuItem_Click(object sender, EventArgs e)
     {
         richTextBox1.SelectionIndent += 20;
+
         _isDirty = true;
+
         UpdateTitle();
     }
 
     private void decreaseIndentToolStripMenuItem_Click(object sender, EventArgs e)
     {
         richTextBox1.SelectionIndent = Math.Max(0, richTextBox1.SelectionIndent - 20);
+
         _isDirty = true;
+
         UpdateTitle();
     }
 
@@ -914,13 +941,18 @@ public partial class Form1 : Form
     {
         var indentDialog = new IndentDialog(richTextBox1.SelectionIndent);
 
-        if (indentDialog.ShowDialog(this) == DialogResult.OK)
+        if (indentDialog.ShowDialog(this) != DialogResult.OK)
         {
-            richTextBox1.SelectionIndent = indentDialog.IndentValue;
-            _isDirty = true;
-            UpdateTitle();
-            toolStripStatusLabel.Text = $@"Отступ установлен: {indentDialog.IndentValue} пиксели";
+            return;
         }
+        
+        richTextBox1.SelectionIndent = indentDialog.IndentValue;
+
+        _isDirty = true;
+
+        UpdateTitle();
+
+        toolStripStatusLabel.Text = $@"Отступ установлен: {indentDialog.IndentValue} пиксели";
     }
 
     private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -946,57 +978,61 @@ public partial class Form1 : Form
 
     private void toolStripComboBoxFontSize_KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.KeyCode == Keys.Return)
+        if (e.KeyCode != Keys.Return)
         {
-            e.Handled = true;
+            return;
+        }
+        
+        e.Handled = true;
 
-            if (richTextBox1.SelectionFont is not null)
+        if (richTextBox1.SelectionFont is null)
+        {
+            return;
+        }
+        
+        try
+        {
+            if (float.TryParse(toolStripComboBoxFontSize.Text, out var fontSize))
             {
-                try
-                {
-                    // Получаем текст, введенный пользователем
-                    if (float.TryParse(toolStripComboBoxFontSize.Text, out var fontSize))
-                    {
-                        if (fontSize < 1 || fontSize > 400)
-                        {
-                            MessageBox.Show(
-                                text: @"Размер шрифта должен быть от 1 до 400",
-                                caption: @"Недопустимое значение",
-                                buttons: MessageBoxButtons.OK,
-                                icon: MessageBoxIcon.Warning);
-                            return;
-                        }
-
-                        var currentFont = richTextBox1.SelectionFont;
-
-                        richTextBox1.SelectionFont = new Font(currentFont.FontFamily, fontSize, currentFont.Style);
-                        richTextBox1.Focus();
-
-                        _isDirty = true;
-
-                        UpdateTitle();
-                        richTextBox1_SelectionChanged(sender, EventArgs.Empty);
-
-                        toolStripStatusLabel.Text = $@"Размер шрифта изменен на: {fontSize}";
-                    }
-                    else
-                    {
-                        MessageBox.Show(
-                            text: @"Введите корректное число для размера шрифта",
-                            caption: @"Ошибка ввода",
-                            buttons: MessageBoxButtons.OK,
-                            icon: MessageBoxIcon.Warning);
-                    }
-                }
-                catch
+                if (fontSize is < 1 or > 400)
                 {
                     MessageBox.Show(
-                        text: @"Ошибка при применении размера шрифта",
-                        caption: @"Ошибка",
+                        text: @"Размер шрифта должен быть от 1 до 400",
+                        caption: @"Недопустимое значение",
                         buttons: MessageBoxButtons.OK,
-                        icon: MessageBoxIcon.Error);
+                        icon: MessageBoxIcon.Warning);
+                    
+                    return;
                 }
+
+                var currentFont = richTextBox1.SelectionFont;
+
+                richTextBox1.SelectionFont = new Font(currentFont.FontFamily, fontSize, currentFont.Style);
+                richTextBox1.Focus();
+
+                _isDirty = true;
+
+                UpdateTitle();
+                richTextBox1_SelectionChanged(sender, EventArgs.Empty);
+
+                toolStripStatusLabel.Text = $@"Размер шрифта изменен на: {fontSize}";
             }
+            else
+            {
+                MessageBox.Show(
+                    text: @"Введите корректное число для размера шрифта",
+                    caption: @"Ошибка ввода",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Warning);
+            }
+        }
+        catch
+        {
+            MessageBox.Show(
+                text: @"Ошибка при применении размера шрифта",
+                caption: @"Ошибка",
+                buttons: MessageBoxButtons.OK,
+                icon: MessageBoxIcon.Error);
         }
     }
 }
