@@ -473,7 +473,7 @@ public partial class Form1 : Form
         {
             return true;
         }
-        
+
         var result = MessageBox.Show(
             text: @"Сохранить изменения в текущем документе?",
             caption: @"Несохраненные изменения",
@@ -506,9 +506,9 @@ public partial class Form1 : Form
         richTextBox1.Clear();
         _currentFilePath = string.Empty;
         _isDirty = false;
-        
+
         UpdateTitle();
-        
+
         toolStripStatusLabel.Text = @"Создан новый документ";
     }
 
@@ -526,7 +526,7 @@ public partial class Form1 : Form
                     caption: @"Ошибка загрузки",
                     buttons: MessageBoxButtons.OK,
                     icon: MessageBoxIcon.Error);
-                
+
                 return;
             }
 
@@ -555,18 +555,18 @@ public partial class Form1 : Form
                     {
                         return;
                     }
-                    
+
                     streamType = RichTextBoxStreamType.PlainText;
-                    
+
                     break;
             }
 
             richTextBox1.LoadFile(filePath, streamType);
             _currentFilePath = filePath;
             _isDirty = false;
-            
+
             UpdateTitle();
-            
+
             toolStripStatusLabel.Text = $@"Файл загружен: {Path.GetFileName(filePath)}";
         }
         catch (IOException ex)
@@ -579,7 +579,7 @@ public partial class Form1 : Form
                 caption: @"Ошибка ввода-вывода",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
-            
+
             toolStripStatusLabel.Text = @"Ошибка загрузки файла";
         }
         catch (ArgumentException ex)
@@ -592,7 +592,7 @@ public partial class Form1 : Form
                 caption: @"Ошибка формата",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
-            
+
             toolStripStatusLabel.Text = @"Ошибка формата файла";
         }
         catch (Exception ex)
@@ -605,7 +605,7 @@ public partial class Form1 : Form
                 caption: @"Ошибка",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
-            
+
             toolStripStatusLabel.Text = @"Ошибка загрузки";
         }
     }
@@ -647,7 +647,7 @@ public partial class Form1 : Form
                 caption: @"Ошибка доступа",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
-            
+
             return SaveDocumentAs();
         }
         catch (IOException ex)
@@ -945,7 +945,7 @@ public partial class Form1 : Form
         {
             return;
         }
-        
+
         richTextBox1.SelectionIndent = indentDialog.IndentValue;
 
         _isDirty = true;
@@ -982,14 +982,14 @@ public partial class Form1 : Form
         {
             return;
         }
-        
+
         e.Handled = true;
 
         if (richTextBox1.SelectionFont is null)
         {
             return;
         }
-        
+
         try
         {
             if (float.TryParse(toolStripComboBoxFontSize.Text, out var fontSize))
@@ -1001,7 +1001,7 @@ public partial class Form1 : Form
                         caption: @"Недопустимое значение",
                         buttons: MessageBoxButtons.OK,
                         icon: MessageBoxIcon.Warning);
-                    
+
                     return;
                 }
 
@@ -1033,6 +1033,43 @@ public partial class Form1 : Form
                 caption: @"Ошибка",
                 buttons: MessageBoxButtons.OK,
                 icon: MessageBoxIcon.Error);
+        }
+    }
+
+    private void toolStripButtonHighlight_Click(object sender, EventArgs e)
+        => highlightToolStripMenuItem_Click(sender, e);
+
+    private void highlightToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        var colorDialog = new ColorDialog();
+
+        if (richTextBox1.SelectionBackColor != Color.Empty)
+        {
+            colorDialog.Color = richTextBox1.SelectionBackColor;
+        }
+
+        if (colorDialog.ShowDialog() == DialogResult.OK)
+        {
+            richTextBox1.SelectionBackColor = colorDialog.Color;
+            richTextBox1.Focus();
+
+            _isDirty = true;
+
+            UpdateTitle();
+            richTextBox1_SelectionChanged(sender, e);
+        }
+    }
+
+    private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (richTextBox1.CanRedo)
+        {
+            richTextBox1.Redo();
+
+            _isDirty = true;
+
+            UpdateTitle();
+            richTextBox1_SelectionChanged(sender, EventArgs.Empty);
         }
     }
 }

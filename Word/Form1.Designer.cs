@@ -38,6 +38,7 @@
             exitToolStripMenuItem = new ToolStripMenuItem();
             editToolStripMenuItem = new ToolStripMenuItem();
             undoToolStripMenuItem = new ToolStripMenuItem();
+            redoToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             cutToolStripMenuItem = new ToolStripMenuItem();
             copyToolStripMenuItem = new ToolStripMenuItem();
@@ -47,6 +48,7 @@
             formatToolStripMenuItem = new ToolStripMenuItem();
             fontToolStripMenuItem = new ToolStripMenuItem();
             colorToolStripMenuItem = new ToolStripMenuItem();
+            highlightToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator4 = new ToolStripSeparator();
             boldToolStripMenuItem = new ToolStripMenuItem();
             italicToolStripMenuItem = new ToolStripMenuItem();
@@ -78,6 +80,7 @@
             toolStripSeparator9 = new ToolStripSeparator();
             toolStripComboBoxFont = new ToolStripComboBox();
             toolStripComboBoxFontSize = new ToolStripComboBox();
+            toolStripButtonHighlight = new ToolStripButton();
             richTextBox1 = new RichTextBox();
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel = new ToolStripStatusLabel();
@@ -155,7 +158,7 @@
             // 
             // editToolStripMenuItem
             // 
-            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { undoToolStripMenuItem, toolStripSeparator2, cutToolStripMenuItem, copyToolStripMenuItem, pasteToolStripMenuItem, toolStripSeparator3, selectAllToolStripMenuItem });
+            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { undoToolStripMenuItem, redoToolStripMenuItem, toolStripSeparator2, cutToolStripMenuItem, copyToolStripMenuItem, pasteToolStripMenuItem, toolStripSeparator3, selectAllToolStripMenuItem });
             editToolStripMenuItem.Name = "editToolStripMenuItem";
             editToolStripMenuItem.Size = new Size(59, 20);
             editToolStripMenuItem.Text = "Правка";
@@ -167,6 +170,14 @@
             undoToolStripMenuItem.Size = new Size(190, 22);
             undoToolStripMenuItem.Text = "Отменить";
             undoToolStripMenuItem.Click += undoToolStripMenuItem_Click;
+            // 
+            // redoToolStripMenuItem
+            // 
+            redoToolStripMenuItem.Name = "redoToolStripMenuItem";
+            redoToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Y;
+            redoToolStripMenuItem.Size = new Size(190, 22);
+            redoToolStripMenuItem.Text = "Повторить";
+            redoToolStripMenuItem.Click += redoToolStripMenuItem_Click;
             // 
             // toolStripSeparator2
             // 
@@ -215,7 +226,7 @@
             // 
             // formatToolStripMenuItem
             // 
-            formatToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fontToolStripMenuItem, colorToolStripMenuItem, toolStripSeparator4, boldToolStripMenuItem, italicToolStripMenuItem, underlineToolStripMenuItem });
+            formatToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fontToolStripMenuItem, colorToolStripMenuItem, highlightToolStripMenuItem, toolStripSeparator4, boldToolStripMenuItem, italicToolStripMenuItem, underlineToolStripMenuItem });
             formatToolStripMenuItem.Name = "formatToolStripMenuItem";
             formatToolStripMenuItem.Size = new Size(62, 20);
             formatToolStripMenuItem.Text = "Формат";
@@ -234,6 +245,13 @@
             colorToolStripMenuItem.Size = new Size(198, 22);
             colorToolStripMenuItem.Text = "Цвет текста...";
             colorToolStripMenuItem.Click += colorToolStripMenuItem_Click;
+            // 
+            // highlightToolStripMenuItem
+            // 
+            highlightToolStripMenuItem.Name = "highlightToolStripMenuItem";
+            highlightToolStripMenuItem.Size = new Size(198, 22);
+            highlightToolStripMenuItem.Text = "Заливка текста";
+            highlightToolStripMenuItem.Click += highlightToolStripMenuItem_Click;
             // 
             // toolStripSeparator4
             // 
@@ -356,7 +374,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonNew, toolStripButtonOpen, toolStripButtonSave, toolStripSeparator5, toolStripButtonBold, toolStripButtonItalic, toolStripButtonUnderline, toolStripSeparator6, toolStripButtonAlignLeft, toolStripButtonAlignCenter, toolStripButtonAlignRight, toolStripSeparator9, toolStripComboBoxFont, toolStripComboBoxFontSize });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonNew, toolStripButtonOpen, toolStripButtonSave, toolStripSeparator5, toolStripButtonBold, toolStripButtonItalic, toolStripButtonUnderline, toolStripSeparator6, toolStripButtonAlignLeft, toolStripButtonAlignCenter, toolStripButtonAlignRight, toolStripSeparator9, toolStripComboBoxFont, toolStripComboBoxFontSize, toolStripButtonHighlight });
             toolStrip1.Location = new Point(0, 24);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(933, 25);
@@ -487,6 +505,16 @@
             toolStripComboBoxFontSize.SelectedIndexChanged += toolStripComboBoxFontSize_SelectedIndexChanged;
             toolStripComboBoxFontSize.KeyDown += toolStripComboBoxFontSize_KeyDown;
             // 
+            // toolStripButtonHighlight
+            // 
+            toolStripButtonHighlight.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonHighlight.Image = Properties.Resources.TextHighlightColour;
+            toolStripButtonHighlight.ImageTransparentColor = Color.Magenta;
+            toolStripButtonHighlight.Name = "toolStripButtonHighlight";
+            toolStripButtonHighlight.Size = new Size(23, 22);
+            toolStripButtonHighlight.Text = "Заливка";
+            toolStripButtonHighlight.Click += toolStripButtonHighlight_Click;
+            // 
             // richTextBox1
             // 
             richTextBox1.Dock = DockStyle.Fill;
@@ -596,5 +624,8 @@
         private ToolStripButton toolStripButtonAlignCenter;
         private ToolStripButton toolStripButtonAlignRight;
         private ToolStripMenuItem customIndentToolStripMenuItem;
+        private ToolStripMenuItem highlightToolStripMenuItem;
+        private ToolStripButton toolStripButtonHighlight;
+        private ToolStripMenuItem redoToolStripMenuItem;
     }
 }
