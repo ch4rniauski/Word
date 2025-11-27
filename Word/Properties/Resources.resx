@@ -124,6 +124,9 @@
   <data name="CopyIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CopyIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="TextHighlightColour" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TextHighlightColour.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ItalicTextIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ItalicTextIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -163,7 +166,7 @@
   <data name="OpenFileIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OpenFileIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TextHighlightColour" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TextHighlightColour.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="FontColour" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FontColour.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

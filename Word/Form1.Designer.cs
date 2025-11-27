@@ -74,16 +74,19 @@
             toolStripButtonItalic = new ToolStripButton();
             toolStripButtonUnderline = new ToolStripButton();
             toolStripSeparator6 = new ToolStripSeparator();
+            toolStripButtonHighlight = new ToolStripButton();
+            toolStripButtonTextColour = new ToolStripButton();
+            toolStripSeparator8 = new ToolStripSeparator();
             toolStripButtonAlignLeft = new ToolStripButton();
             toolStripButtonAlignCenter = new ToolStripButton();
             toolStripButtonAlignRight = new ToolStripButton();
             toolStripSeparator9 = new ToolStripSeparator();
             toolStripComboBoxFont = new ToolStripComboBox();
             toolStripComboBoxFontSize = new ToolStripComboBox();
-            toolStripButtonHighlight = new ToolStripButton();
             richTextBox1 = new RichTextBox();
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel = new ToolStripStatusLabel();
+            clearHighlightToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -226,7 +229,7 @@
             // 
             // formatToolStripMenuItem
             // 
-            formatToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fontToolStripMenuItem, colorToolStripMenuItem, highlightToolStripMenuItem, toolStripSeparator4, boldToolStripMenuItem, italicToolStripMenuItem, underlineToolStripMenuItem });
+            formatToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fontToolStripMenuItem, colorToolStripMenuItem, highlightToolStripMenuItem, clearHighlightToolStripMenuItem, toolStripSeparator4, boldToolStripMenuItem, italicToolStripMenuItem, underlineToolStripMenuItem });
             formatToolStripMenuItem.Name = "formatToolStripMenuItem";
             formatToolStripMenuItem.Size = new Size(62, 20);
             formatToolStripMenuItem.Text = "Формат";
@@ -374,7 +377,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonNew, toolStripButtonOpen, toolStripButtonSave, toolStripSeparator5, toolStripButtonBold, toolStripButtonItalic, toolStripButtonUnderline, toolStripSeparator6, toolStripButtonAlignLeft, toolStripButtonAlignCenter, toolStripButtonAlignRight, toolStripSeparator9, toolStripComboBoxFont, toolStripComboBoxFontSize, toolStripButtonHighlight });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButtonNew, toolStripButtonOpen, toolStripButtonSave, toolStripSeparator5, toolStripButtonBold, toolStripButtonItalic, toolStripButtonUnderline, toolStripSeparator6, toolStripButtonHighlight, toolStripButtonTextColour, toolStripSeparator8, toolStripButtonAlignLeft, toolStripButtonAlignCenter, toolStripButtonAlignRight, toolStripSeparator9, toolStripComboBoxFont, toolStripComboBoxFontSize });
             toolStrip1.Location = new Point(0, 24);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(933, 25);
@@ -454,6 +457,31 @@
             toolStripSeparator6.Name = "toolStripSeparator6";
             toolStripSeparator6.Size = new Size(6, 25);
             // 
+            // toolStripButtonHighlight
+            // 
+            toolStripButtonHighlight.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonHighlight.Image = Properties.Resources.TextHighlightColour;
+            toolStripButtonHighlight.ImageTransparentColor = Color.Magenta;
+            toolStripButtonHighlight.Name = "toolStripButtonHighlight";
+            toolStripButtonHighlight.Size = new Size(23, 22);
+            toolStripButtonHighlight.Text = "Заливка";
+            toolStripButtonHighlight.Click += toolStripButtonHighlight_Click;
+            // 
+            // toolStripButtonTextColour
+            // 
+            toolStripButtonTextColour.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButtonTextColour.Image = Properties.Resources.FontColour;
+            toolStripButtonTextColour.ImageTransparentColor = Color.Magenta;
+            toolStripButtonTextColour.Name = "toolStripButtonTextColour";
+            toolStripButtonTextColour.Size = new Size(23, 22);
+            toolStripButtonTextColour.Text = "Цвет текста";
+            toolStripButtonTextColour.Click += toolStripButtonTextColour_Click;
+            // 
+            // toolStripSeparator8
+            // 
+            toolStripSeparator8.Name = "toolStripSeparator8";
+            toolStripSeparator8.Size = new Size(6, 25);
+            // 
             // toolStripButtonAlignLeft
             // 
             toolStripButtonAlignLeft.CheckOnClick = true;
@@ -505,16 +533,6 @@
             toolStripComboBoxFontSize.SelectedIndexChanged += toolStripComboBoxFontSize_SelectedIndexChanged;
             toolStripComboBoxFontSize.KeyDown += toolStripComboBoxFontSize_KeyDown;
             // 
-            // toolStripButtonHighlight
-            // 
-            toolStripButtonHighlight.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButtonHighlight.Image = Properties.Resources.TextHighlightColour;
-            toolStripButtonHighlight.ImageTransparentColor = Color.Magenta;
-            toolStripButtonHighlight.Name = "toolStripButtonHighlight";
-            toolStripButtonHighlight.Size = new Size(23, 22);
-            toolStripButtonHighlight.Text = "Заливка";
-            toolStripButtonHighlight.Click += toolStripButtonHighlight_Click;
-            // 
             // richTextBox1
             // 
             richTextBox1.Dock = DockStyle.Fill;
@@ -542,6 +560,13 @@
             toolStripStatusLabel.Name = "toolStripStatusLabel";
             toolStripStatusLabel.Size = new Size(45, 17);
             toolStripStatusLabel.Text = "Готово";
+            // 
+            // clearHighlightToolStripMenuItem
+            // 
+            clearHighlightToolStripMenuItem.Name = "clearHighlightToolStripMenuItem";
+            clearHighlightToolStripMenuItem.Size = new Size(198, 22);
+            clearHighlightToolStripMenuItem.Text = "Убрать заливку";
+            clearHighlightToolStripMenuItem.Click += clearHighlightToolStripMenuItem_Click;
             // 
             // Form1
             // 
@@ -627,5 +652,8 @@
         private ToolStripMenuItem highlightToolStripMenuItem;
         private ToolStripButton toolStripButtonHighlight;
         private ToolStripMenuItem redoToolStripMenuItem;
+        private ToolStripButton toolStripButtonTextColour;
+        private ToolStripSeparator toolStripSeparator8;
+        private ToolStripMenuItem clearHighlightToolStripMenuItem;
     }
 }

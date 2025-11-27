@@ -1072,4 +1072,31 @@ public partial class Form1 : Form
             richTextBox1_SelectionChanged(sender, EventArgs.Empty);
         }
     }
+
+    private void toolStripButtonTextColour_Click(object sender, EventArgs e)
+        => colorToolStripMenuItem_Click(sender, e);
+
+    private void clearHighlightToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (richTextBox1.SelectionLength > 0)
+        {
+            richTextBox1.SelectionBackColor = richTextBox1.BackColor;
+            richTextBox1.Focus();
+
+            _isDirty = true;
+
+            UpdateTitle();
+            richTextBox1_SelectionChanged(sender, EventArgs.Empty);
+
+            toolStripStatusLabel.Text = @"Заливка удалена";
+        }
+        else
+        {
+            MessageBox.Show(
+                text: @"Выделите текст, чтобы убрать заливку",
+                caption: @"Внимание",
+                buttons: MessageBoxButtons.OK,
+                icon: MessageBoxIcon.Information);
+        }
+    }
 }
